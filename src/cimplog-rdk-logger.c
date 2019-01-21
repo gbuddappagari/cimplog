@@ -79,8 +79,22 @@ void __cimplog(const char *module, int level, const char *msg, ...)
         init_done = 1;
     }
 
-    __cimplog_common(rdk_logger_module, module, level, msg);
-
+    va_list args;
+    char *pTempChar = NULL;
+    int ret = 0;
+    pTempChar = (char *)malloc(MAX_BUF_SIZE);
+    if(pTempChar)
+    {
+        va_start(args, msg);
+        ret = vsnprintf(pTempChar, MAX_BUF_SIZE, msg,args);
+        if(ret < 0)
+        {
+            perror(pTempChar);
+        }
+        va_end(args);
+        __cimplog_common(rdk_logger_module, module, level, "%s", pTempChar);
+        free(pTempChar);
+    }
     return;
 }
 
@@ -111,7 +125,22 @@ void __cimplog_generic(const char *rdk_logger_module, const char *module, int le
         init_done = 1;
     }
 
-    __cimplog_common(rdk_logger_module, module, level, msg);
+    va_list args;
+    char *pTempChar = NULL;
+    int ret = 0;
+    pTempChar = (char *)malloc(MAX_BUF_SIZE);
+    if(pTempChar)
+    {
+        va_start(args, msg);
+        ret = vsnprintf(pTempChar, MAX_BUF_SIZE, msg,args);
+        if(ret < 0)
+        {
+            perror(pTempChar);
+        }
+        va_end(args);
+        __cimplog_common(rdk_logger_module, module, level, "%s", pTempChar);
+        free(pTempChar);
+    }
 
     return;
 }
